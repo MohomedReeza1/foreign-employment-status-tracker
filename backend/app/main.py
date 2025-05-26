@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.database import engine, Base
-# from app.api import auth
-# from app.api import candidate
+from app.api import auth
+from app.api import candidate
 
 Base.metadata.create_all(bind=engine)
 
@@ -11,5 +11,5 @@ app = FastAPI()
 def read_root():
     return {"msg": "Backend API is running"}
 
-# app.include_router(auth.router)
-# app.include_router(candidate.router)
+app.include_router(auth.router)
+app.include_router(candidate.router)
