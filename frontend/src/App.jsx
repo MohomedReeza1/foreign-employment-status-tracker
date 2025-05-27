@@ -8,9 +8,9 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
-      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-      {/* <Route path="/tracker/:id" element={<CandidateTracker />} /> */}
-      {/* <Route path="/add" element={<CandidateForm />} /> */}
+      {/* <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/tracker/:id" element={<CandidateTracker />} />
+      <Route path="/add" element={<CandidateForm />} /> */}
     </Routes>
   )
 }
