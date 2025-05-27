@@ -24,9 +24,12 @@ export default function Login() {
       // Redirect based on role
       if (role === 'admin') {
         navigate('/dashboard')
-      } else {
+      } else if (role === 'processor') {
         navigate('/tracker')
+      } else {
+        navigate('/')
       }
+
     } catch (err) {
       setError('Invalid credentials')
     }
