@@ -3,10 +3,10 @@ import api from '../api/axios'
 
 export default function CandidateForm() {
   const [form, setForm] = useState({
-    fullName: '',
-    passport: '',
+    full_name: '',
+    passport_number: '',
     nic: '',
-    refNo: '',
+    reference_number: '',
   })
 
   const handleChange = (e) => {
@@ -18,7 +18,7 @@ export default function CandidateForm() {
     try {
         const res = await api.post('/candidates', form)
         alert('Candidate added successfully!')
-        setForm({ fullName: '', passport: '', nic: '', refNo: '' }) // Clear form
+        setForm({ full_name: '', passport_number: '', nic: '', reference_number: '' }) // Clear form
     } catch (error) {
         console.error('Error adding candidate:', error)
         alert('Failed to add candidate.')
@@ -32,47 +32,51 @@ export default function CandidateForm() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block mb-1 font-medium">Full Name</label>
+            <label className="block mb-1 font-medium">Full Name
             <input
-              name="fullName"
-              value={form.fullName}
+              name="full_name"
+              value={form.full_name}
               onChange={handleChange}
-              className="w-full border border-gray-300 p-2 rounded"
+              className="w-full border border-gray-300 p-2 rounded font-normal"
               required
             />
+            </label>
           </div>
 
           <div>
-            <label className="block mb-1 font-medium">Passport Number</label>
+            <label className="block mb-1 font-medium">Passport Number
             <input
-              name="passport"
-              value={form.passport}
+              name="passport_number"
+              value={form.passport_number}
               onChange={handleChange}
-              className="w-full border border-gray-300 p-2 rounded"
+              className="w-full border border-gray-300 p-2 rounded font-normal"
               required
             />
+            </label>
           </div>
 
           <div>
-            <label className="block mb-1 font-medium">NIC</label>
+            <label className="block mb-1 font-medium">NIC
             <input
               name="nic"
               value={form.nic}
               onChange={handleChange}
-              className="w-full border border-gray-300 p-2 rounded"
+              className="w-full border border-gray-300 p-2 rounded font-normal"
               required
             />
+            </label>
           </div>
 
           <div>
-            <label className="block mb-1 font-medium">Reference Number</label>
+            <label className="block mb-1 font-medium">Reference Number
             <input
-              name="refNo"
-              value={form.refNo}
+              name="reference_number"
+              value={form.reference_number}
               onChange={handleChange}
-              className="w-full border border-gray-300 p-2 rounded"
+              className="w-full border border-gray-300 p-2 rounded font-normal"
               required
             />
+            </label>
           </div>
 
           <button
