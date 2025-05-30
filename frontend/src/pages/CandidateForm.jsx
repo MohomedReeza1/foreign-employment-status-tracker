@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import api from '../api/axios'
 
 export default function CandidateForm() {
+  const [candidateExists, setCandidateExists] = useState(false)
   const [form, setForm] = useState({
     full_name: '',
     passport_number: '',
@@ -22,6 +23,17 @@ export default function CandidateForm() {
     } catch (error) {
         console.error('Error adding candidate:', error)
         alert('Failed to add candidate.')
+    }
+  }
+
+  const checkExistingCandidate = async (passport) => {
+    if (!passport) return
+    try {
+      const res = await api.get(`/candidates/search?passport=${passport}`)
+      setCandidateExists(!!res.data)
+    } catch (err) {
+      console.error('Search failed:', err)
+      setCandidateExists(false)
     }
   }
 
@@ -48,11 +60,20 @@ export default function CandidateForm() {
             <input
               name="passport_number"
               value={form.passport_number}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e)
+                checkExistingCandidate(e.target.value)
+              }}
               className="w-full border border-gray-300 p-2 rounded font-normal"
               required
             />
             </label>
+
+            {candidateExists && (
+              <p className="text-red-600 text-sm mt-1">
+                A candidate with this passport already exists.
+              </p>
+            )}
           </div>
 
           <div>
@@ -81,7 +102,8 @@ export default function CandidateForm() {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+            disabled={candidateExists}
+            className={`w-full py-2 rounded text-white ${candidateExists ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
           >
             Submit
           </button>
