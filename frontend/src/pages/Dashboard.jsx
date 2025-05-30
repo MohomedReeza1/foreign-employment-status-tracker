@@ -1,7 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import api from '../api/axios'
 import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
+  const [candidates, setCandidates] = useState([])
+
+  useEffect(() => {
+    const fetchCandidates = async () => {
+      try {
+        const res = await api.get('/candidates')
+        setCandidates(res.data)
+      } catch (error) {
+        console.error('Failed to fetch candidates:', error)
+      }
+    }
+
+    fetchCandidates()
+  }, [])
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-7xl mx-auto">
@@ -36,22 +52,19 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {/* Candidate rows will be inserted here */}
-              <tr className="border-b">
-                <td className="px-6 py-4">Jane Doe</td>
-                <td className="px-6 py-4">N1234567</td>
-                <td className="px-6 py-4">991234567V</td>
-                <td className="px-6 py-4">HMK-0001</td>
-                <td className="px-6 py-4">Medical Done</td>
-                <td className="px-6 py-4">
-                <button className="text-blue-600 hover:underline">
-                    {/* <Link to={`/tracker/${id}`} className="text-blue-600 hover:underline"> */}
-                    View
-                    {/* </Link> */}
-                </button>
-                </td>
-              </tr>
-              {/* more rows will come here dynamically */}
+              {candidates.map((c, index) => (
+                <tr key={index} className="border-b">
+                  <td className="px-6 py-4">{c.full_name}</td>
+                  <td className="px-6 py-4">{c.passport_number}</td>
+                  <td className="px-6 py-4">{c.nic}</td>
+                  <td className="px-6 py-4">{c.reference_number}</td>
+                  <td className="px-6 py-4">
+                    <button className="text-blue-600 hover:underline">
+                      <a href={`/tracker/${c.id}`} className="text-blue-600 hover:underline">View</a>
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
