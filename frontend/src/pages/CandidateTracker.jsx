@@ -48,15 +48,46 @@ export default function CandidateTracker() {
                 <th className="px-6 py-3 text-left">Updated Date</th>
               </tr>
             </thead>
+            
             <tbody>
-              {processes.map((p) => (
-                <tr key={p.id} className="border-b">
-                  <td className="px-6 py-4">{p.stage}</td>
-                  <td className="px-6 py-4">{p.status}</td>
-                  <td className="px-6 py-4">{p.updated_at || '-'}</td>
-                </tr>
-              ))}
-            </tbody>
+                {processes.map((p, index) => (
+                    <tr key={p.id} className="border-b">
+                    <td className="px-6 py-4">{p.stage}</td>
+
+                    <td className="px-6 py-4">
+                        <select
+                        value={p.status}
+                        onChange={async (e) => {
+                            const newStatus = e.target.value
+                            try {
+                            const res = await api.put(`/candidate-process/${p.id}`, {
+                                status: newStatus,
+                                updated_at: new Date().toISOString().split('T')[0], // YYYY-MM-DD
+                            })
+                            // Update local state
+                            const updated = [...processes]
+                            updated[index] = res.data
+                            setProcesses(updated)
+                            } catch (err) {
+                            console.error('Failed to update status', err)
+                            alert('Error updating process status.')
+                            }
+                        }}
+                        className="border border-gray-300 p-1 rounded"
+                        >
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                        </select>
+                    </td>
+
+                    <td className="px-6 py-4">
+                        {new Date(p.updated_at).toLocaleDateString()}
+                    </td>
+                    </tr>
+                ))}
+                </tbody>
+            
           </table>
         </div>
       </div>
