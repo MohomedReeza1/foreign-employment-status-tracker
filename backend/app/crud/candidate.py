@@ -24,3 +24,13 @@ def create_process(db: Session, data: CandidateProcessCreate):
 
 def get_processes_by_candidate(db: Session, candidate_id: int):
     return db.query(CandidateProcess).filter(CandidateProcess.candidate_id == candidate_id).all()
+
+def update_process(db: Session, process_id: int, update_data: dict):
+    process = db.query(CandidateProcess).filter(CandidateProcess.id == process_id).first()
+    if not process:
+        return None
+    for key, value in update_data.items():
+        setattr(process, key, value)
+    db.commit()
+    db.refresh(process)
+    return process

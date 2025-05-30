@@ -29,3 +29,7 @@ class CandidateProcessOut(CandidateProcessBase):
     candidate_id: int
     class Config:
         orm_mode = True
+
+class ProcessUpdate(BaseModel):
+    status: Optional[str] = None
+    updated_at: Optional[date] = None

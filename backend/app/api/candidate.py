@@ -35,3 +35,10 @@ def add_process(process: CandidateProcessCreate, db: Session = Depends(get_db)):
 @router.get("/candidate-process/{candidate_id}", response_model=List[CandidateProcessOut])
 def get_processes(candidate_id: int, db: Session = Depends(get_db)):
     return crud.get_processes_by_candidate(db, candidate_id)
+
+@router.put("/candidate-process/{process_id}", response_model=CandidateProcessOut)
+def update_process(process_id: int, update: ProcessUpdate, db: Session = Depends(get_db)):
+    updated = crud.update_process(db, process_id, update.dict(exclude_unset=True))
+    if not updated:
+        raise HTTPException(status_code=404, detail="Process not found")
+    return updated
