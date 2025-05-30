@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
   return (
@@ -43,7 +44,11 @@ export default function Dashboard() {
                 <td className="px-6 py-4">HMK-0001</td>
                 <td className="px-6 py-4">Medical Done</td>
                 <td className="px-6 py-4">
-                  <button className="text-blue-600 hover:underline">View</button>
+                <button className="text-blue-600 hover:underline">
+                    {/* <Link to={`/tracker/${id}`} className="text-blue-600 hover:underline"> */}
+                    View
+                    {/* </Link> */}
+                </button>
                 </td>
               </tr>
               {/* more rows will come here dynamically */}
