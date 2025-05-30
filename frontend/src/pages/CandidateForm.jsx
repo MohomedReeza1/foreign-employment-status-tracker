@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import api from '../api/axios'
 
 export default function CandidateForm() {
   const [form, setForm] = useState({
@@ -12,10 +13,16 @@ export default function CandidateForm() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Candidate submitted:', form)
-    // 🔜 Later: Send data to FastAPI via Axios
+    try {
+        const res = await api.post('/candidates', form)
+        alert('Candidate added successfully!')
+        setForm({ fullName: '', passport: '', nic: '', refNo: '' }) // Clear form
+    } catch (error) {
+        console.error('Error adding candidate:', error)
+        alert('Failed to add candidate.')
+    }
   }
 
   return (
