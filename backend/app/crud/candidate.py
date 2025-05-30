@@ -34,3 +34,6 @@ def update_process(db: Session, process_id: int, update_data: dict):
     db.commit()
     db.refresh(process)
     return process
+
+def get_candidate_by_passport(db: Session, passport_number: str):
+    return db.query(Candidate).filter(Candidate.passport_number == passport_number).first()
