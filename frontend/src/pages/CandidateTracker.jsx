@@ -33,9 +33,9 @@ export default function CandidateTracker() {
         {candidate && (
           <div className="bg-white p-4 rounded shadow mb-6">
             <p><strong>Full Name:</strong> {candidate.full_name}</p>
-            <p><strong>Passport No:</strong> {candidate.passport}</p>
+            <p><strong>Passport No:</strong> {candidate.passport_number}</p>
             <p><strong>NIC:</strong> {candidate.nic}</p>
-            <p><strong>Reference No:</strong> {candidate.ref_no}</p>
+            <p><strong>Reference No:</strong> {candidate.reference_number}</p>
           </div>
         )}
 
