@@ -59,6 +59,9 @@ export default function Dashboard() {
                   <td className="px-6 py-4">{c.nic}</td>
                   <td className="px-6 py-4">{c.reference_number}</td>
                   <td className="px-6 py-4">
+                    
+                  </td>
+                  <td className="px-6 py-4">
                     <button className="text-blue-600 hover:underline">
                       <a href={`/tracker/${c.id}`} className="text-blue-600 hover:underline">View</a>
                     </button>
