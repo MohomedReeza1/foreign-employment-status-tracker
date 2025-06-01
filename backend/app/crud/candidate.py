@@ -37,3 +37,34 @@ def update_process(db: Session, process_id: int, update_data: dict):
 
 def get_candidate_by_passport(db: Session, passport_number: str):
     return db.query(Candidate).filter(Candidate.passport_number == passport_number).first()
+
+def get_all_candidates_with_latest_status(db: Session):
+    candidates = db.query(Candidate).all()
+    stage_priority = {
+        "medical": 1,
+        "visa": 2,
+        "embassy": 3,
+        "ticket": 4,
+        "departure": 5
+    }
+    results = []
+
+    for c in candidates:
+        # Sort processes by stage priority
+        processes = sorted(
+            c.processes,
+            key=lambda p: stage_priority.get(p.stage.lower(), 0),
+            reverse=True
+        )
+        latest = processes[0] if processes else None
+
+        results.append({
+            "id": c.id,
+            "full_name": c.full_name,
+            "passport_number": c.passport_number,
+            "nic": c.nic,
+            "reference_number": c.reference_number,
+            "status": latest.stage if latest else None
+        })
+
+    return results

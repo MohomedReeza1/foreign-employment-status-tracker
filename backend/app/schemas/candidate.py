@@ -16,6 +16,13 @@ class CandidateOut(CandidateBase):
     class Config:
         orm_mode = True
 
+class CandidateWithStatusOut(CandidateBase):
+    id: int
+    status: Optional[str]
+
+    class Config:
+        orm_mode = True
+
 class CandidateProcessBase(BaseModel):
     stage: str
     status: str

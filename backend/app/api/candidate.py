@@ -29,9 +29,9 @@ def read_candidate(candidate_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Candidate not found")
     return db_candidate
 
-@router.get("/candidates", response_model=List[CandidateOut])
-def list_candidates(db: Session = Depends(get_db)):
-    return crud.get_all_candidates(db)
+@router.get("/candidates", response_model=List[CandidateWithStatusOut])
+def get_candidates_with_status(db: Session = Depends(get_db)):
+    return crud.get_all_candidates_with_latest_status(db)
 
 @router.post("/candidate-process", response_model=CandidateProcessOut)
 def add_process(process: CandidateProcessCreate, db: Session = Depends(get_db)):
