@@ -22,12 +22,16 @@ export default function Dashboard() {
   }, [])
 
   const filteredCandidates = candidates.filter((c) => {
+    const fullName = c.full_name || ''
+    const passport = c.passport_number || ''
+    const status = c.status || 'Not Started'
+
     const matchSearch =
-      c.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.passport_number?.toLowerCase().includes(searchQuery.toLowerCase())
+      fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      passport.toLowerCase().includes(searchQuery.toLowerCase())
 
     const matchStatus = statusFilter
-      ? c.status?.toLowerCase() === statusFilter.toLowerCase()
+      ? status.toLowerCase() === statusFilter.toLowerCase()
       : true
 
     return matchSearch && matchStatus
@@ -55,6 +59,7 @@ export default function Dashboard() {
             className="border border-gray-300 px-4 py-2 rounded w-full md:w-1/4"
           >
             <option value="">Filter by Status</option>
+            <option value="Not Started">Not Started</option>
             <option value="Medical">Medical</option>
             <option value="Visa">Visa</option>
             <option value="SLBFE">SLBFE</option>

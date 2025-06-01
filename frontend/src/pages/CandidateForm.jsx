@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import api from '../api/axios'
+import { useNavigate } from 'react-router-dom'
 
 export default function CandidateForm() {
   const [candidateExists, setCandidateExists] = useState(false)
@@ -9,6 +10,7 @@ export default function CandidateForm() {
     nic: '',
     reference_number: '',
   })
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -41,6 +43,16 @@ export default function CandidateForm() {
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-xl mx-auto bg-white p-6 rounded shadow">
         <h2 className="text-2xl font-bold mb-4">Add New Candidate</h2>
+
+        <div className="flex justify-end mb-4">
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            className="text-blue-600 hover:text-blue-800"
+          >
+            ← Back to Dashboard
+          </button>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -104,6 +116,7 @@ export default function CandidateForm() {
             type="submit"
             disabled={candidateExists}
             className={`w-full py-2 rounded text-white ${candidateExists ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
+            onClick={() => navigate('/')}
           >
             Submit
           </button>
