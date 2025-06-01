@@ -13,9 +13,9 @@ export default function Login() {
 
   useEffect(() => {
     if (token && role === 'processor') {
-      navigate('/tracker/1')
+      navigate('dashboard')
     } else if (token && role === 'agent') {
-      navigate('/tracker/1')
+      navigate('dashboard')
     }
   }, [token, role])
 
@@ -33,7 +33,7 @@ export default function Login() {
       localStorage.setItem('role', role)
 
       login(access_token, role)
-      
+
     } catch (err) {
       setError('Invalid credentials')
     }

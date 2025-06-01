@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import api from '../api/axios'
 import Header from '../components/Header'
 
 export default function CandidateTracker() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { role } = useAuth()
   const [candidate, setCandidate] = useState(null)
   const [processes, setProcesses] = useState([])
   const [showForm, setShowForm] = useState(false)
@@ -96,12 +98,15 @@ export default function CandidateTracker() {
                 <p><strong>Reference No:</strong> {candidate.reference_number}</p>
               </div>
 
-              <button
-                onClick={() => setShowForm(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-              >
-                Add New Process
-              </button>
+              {role === 'processor' && ( // only processors see this
+                <button
+                  onClick={() => setShowForm(true)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  Add New Process
+                </button>
+              )}
+
             </div>
           )}
 

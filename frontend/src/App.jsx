@@ -20,9 +20,9 @@ function App() {
       <Route
         path="/tracker/:id"
         element={
-          <PrivateRoute>
+          // <PrivateRoute>
             <CandidateTracker />
-          </PrivateRoute>
+          // </PrivateRoute>
         }
       />
       <Route

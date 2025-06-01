@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import api from '../api/axios'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import Header from '../components/Header'
 
 export default function Dashboard() {
@@ -8,6 +9,7 @@ export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const navigate = useNavigate()
+  const { role } = useAuth()
 
   useEffect(() => {
     const fetchCandidates = async () => {
@@ -70,13 +72,17 @@ export default function Dashboard() {
             <option value="Post-Departure">Post-Departure</option>
           </select>
           </div>
+          
 
-          <button
+          {role === 'processor' && ( // only processors see this
+            <button
             onClick={() => navigate('/add')}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             Add New Candidate
           </button>
+          )}
+          
         </div>
 
         {/* Table */}
