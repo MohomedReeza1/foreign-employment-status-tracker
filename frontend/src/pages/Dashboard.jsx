@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import api from '../api/axios'
+import { useNavigate } from 'react-router-dom'
 
 export default function Dashboard() {
   const [candidates, setCandidates] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchCandidates = async () => {
@@ -37,7 +39,8 @@ export default function Dashboard() {
         <h1 className="text-3xl font-bold mb-6 text-gray-800">Candidate Dashboard</h1>
 
         {/* Filters */}
-        <div className="bg-white p-4 rounded shadow mb-6 flex flex-wrap gap-4">
+        <div className="bg-white p-4 rounded shadow mb-6 flex flex-wrap md:flex-nowrap gap-4 items-center justify-between">
+          <div className="flex flex-wrap md:flex-nowrap gap-4 w-full md:w-auto flex-1">
           <input
             type="text"
             placeholder="Search by Name or Passport No"
@@ -58,6 +61,14 @@ export default function Dashboard() {
             <option value="Ticket">Ticket</option>
             <option value="Post-Departure">Post-Departure</option>
           </select>
+          </div>
+
+          <button
+            onClick={() => navigate('/add')}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Add New Candidate
+          </button>
         </div>
 
         {/* Table */}
