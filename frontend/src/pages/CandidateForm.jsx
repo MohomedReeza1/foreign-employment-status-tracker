@@ -47,7 +47,7 @@ export default function CandidateForm() {
         <div className="flex justify-end mb-4">
           <button
             type="button"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/dashboard')}
             className="text-blue-600 hover:text-blue-800"
           >
             ← Back to Dashboard
@@ -116,7 +116,7 @@ export default function CandidateForm() {
             type="submit"
             disabled={candidateExists}
             className={`w-full py-2 rounded text-white ${candidateExists ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/dashboard')}
           >
             Submit
           </button>

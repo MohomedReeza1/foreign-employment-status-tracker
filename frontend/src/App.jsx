@@ -8,7 +8,7 @@ import CandidateForm from './pages/CandidateForm'
 function App() {
   return (
     <Routes>
-        <Route path="/" element={<Dashboard />} /> {/* For now */}
+        <Route path="/dashboard" element={<Dashboard />} /> {/* For now */}
         <Route path="/tracker/:id" element={<CandidateTracker />} />
         <Route path="/add" element={<CandidateForm />} />
     </Routes>
