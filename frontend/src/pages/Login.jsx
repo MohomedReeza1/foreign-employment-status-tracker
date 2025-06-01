@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -21,11 +23,13 @@ export default function Login() {
       localStorage.setItem('token', access_token)
       localStorage.setItem('role', role)
 
+      login(access_token, role)
+
       // Redirect based on role
-      if (role === 'admin') {
+      if (role === 'agent') {
         navigate('/dashboard')
       } else if (role === 'processor') {
-        navigate('/tracker')
+        navigate('/add')
       } else {
         navigate('/')
       }
