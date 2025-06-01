@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import api from '../api/axios'
 import { useNavigate } from 'react-router-dom'
+import Header from '../components/Header'
 
 export default function CandidateForm() {
   const [candidateExists, setCandidateExists] = useState(false)
@@ -40,6 +41,8 @@ export default function CandidateForm() {
   }
 
   return (
+    <>
+    <Header />
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-xl mx-auto bg-white p-6 rounded shadow">
         <h2 className="text-2xl font-bold mb-4">Add New Candidate</h2>
@@ -123,5 +126,6 @@ export default function CandidateForm() {
         </form>
       </div>
     </div>
+    </>
   )
 }

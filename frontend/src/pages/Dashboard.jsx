@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import api from '../api/axios'
 import { useNavigate } from 'react-router-dom'
+import Header from '../components/Header'
 
 export default function Dashboard() {
   const [candidates, setCandidates] = useState([])
@@ -38,6 +39,8 @@ export default function Dashboard() {
   })
 
   return (
+    <>
+    <Header />
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-6 text-gray-800">Candidate Dashboard</h1>
@@ -109,5 +112,6 @@ export default function Dashboard() {
         </div>
       </div>
     </div>
+    </>
   )
 }
