@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import api from '../api/axios'
-import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
   const [candidates, setCandidates] = useState([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState('')
 
   useEffect(() => {
     const fetchCandidates = async () => {
@@ -18,6 +19,18 @@ export default function Dashboard() {
     fetchCandidates()
   }, [])
 
+  const filteredCandidates = candidates.filter((c) => {
+    const matchSearch =
+      c.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      c.passport_number?.toLowerCase().includes(searchQuery.toLowerCase())
+
+    const matchStatus = statusFilter
+      ? c.status?.toLowerCase() === statusFilter.toLowerCase()
+      : true
+
+    return matchSearch && matchStatus
+  })
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-7xl mx-auto">
@@ -28,13 +41,22 @@ export default function Dashboard() {
           <input
             type="text"
             placeholder="Search by Name or Passport No"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="border border-gray-300 px-4 py-2 rounded w-full md:w-1/3"
           />
-          <select className="border border-gray-300 px-4 py-2 rounded w-full md:w-1/4">
+
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="border border-gray-300 px-4 py-2 rounded w-full md:w-1/4"
+          >
             <option value="">Filter by Status</option>
-            <option value="medical">Medical Done</option>
-            <option value="visa">Visa Approved</option>
-            <option value="ticketed">Ticket Issued</option>
+            <option value="Medical">Medical</option>
+            <option value="Visa">Visa</option>
+            <option value="SLBFE">SLBFE</option>
+            <option value="Ticket">Ticket</option>
+            <option value="Post-Departure">Post-Departure</option>
           </select>
         </div>
 
@@ -52,7 +74,7 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {candidates.map((c, index) => (
+              {filteredCandidates.map((c, index) => (
                 <tr key={index} className="border-b">
                   <td className="px-6 py-4">{c.full_name}</td>
                   <td className="px-6 py-4">{c.passport_number}</td>
