@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
@@ -9,6 +9,15 @@ export default function Login() {
   const [error, setError] = useState('')
   const navigate = useNavigate()
   const { login } = useAuth()
+  const { token, role } = useAuth() 
+
+  useEffect(() => {
+    if (token && role === 'processor') {
+      navigate('/tracker/1')
+    } else if (token && role === 'agent') {
+      navigate('/tracker/1')
+    }
+  }, [token, role])
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -24,16 +33,7 @@ export default function Login() {
       localStorage.setItem('role', role)
 
       login(access_token, role)
-
-      // Redirect based on role
-      if (role === 'agent') {
-        navigate('/dashboard')
-      } else if (role === 'processor') {
-        navigate('/add')
-      } else {
-        navigate('/')
-      }
-
+      
     } catch (err) {
       setError('Invalid credentials')
     }
