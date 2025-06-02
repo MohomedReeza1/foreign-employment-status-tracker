@@ -4,7 +4,6 @@ from app.database import SessionLocal
 from app.schemas.candidate import *
 from app.crud import candidate as crud
 
-from app.schemas.candidate_process_detail import CandidateProcessDetailUpdate
 from app.schemas.candidate_process_detail import CandidateProcessDetailResponse, CandidateProcessDetailUpdate
 
 router = APIRouter()
@@ -58,13 +57,17 @@ def get_process_detail(candidate_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Process details not found")
     return detail
 
+@router.post("/candidate-details/{candidate_id}", response_model=CandidateProcessDetailResponse)
+def create_process_detail(candidate_id: int, db: Session = Depends(get_db)):
+    result = crud.create_candidate_process_detail(db, candidate_id)
+    if not result:
+        raise HTTPException(status_code=400, detail="Process detail already exists")
+    return result
+
 @router.put("/candidate-details/{candidate_id}", response_model=CandidateProcessDetailResponse)
-def update_process_detail(candidate_id: int, data: CandidateProcessDetailUpdate, db: Session = Depends(get_db)):
-    updated = crud.update_process_detail(db, candidate_id, data)
+def update_process_detail(candidate_id: int, update: CandidateProcessDetailUpdate, db: Session = Depends(get_db)):
+    update_data = update.dict(exclude_unset=True)
+    updated = crud.update_process_detail(db, candidate_id, update_data)
     if not updated:
         raise HTTPException(status_code=404, detail="Candidate process detail not found")
     return updated
-
-@router.post("/candidate-details/{candidate_id}", response_model=CandidateProcessDetailResponse)
-def create_candidate_process_detail(candidate_id: int, db: Session = Depends(get_db)):
-    return crud.create_process_detail_if_not_exists(db, candidate_id)

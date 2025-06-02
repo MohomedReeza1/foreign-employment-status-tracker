@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.candidate import Candidate, CandidateProcess
 from app.schemas.candidate import CandidateCreate, CandidateProcessCreate
-from fastapi import HTTPException
 
 from app.models.candidate_process_detail import CandidateProcessDetail
 from app.schemas.candidate_process_detail import CandidateProcessDetailUpdate
@@ -74,29 +73,30 @@ def get_all_candidates_with_latest_status(db: Session):
 
     return results
 
+# Process Detail Functions
 def get_process_detail_by_candidate(db: Session, candidate_id: int):
-    return db.query(CandidateProcessDetail).filter(CandidateProcessDetail.candidate_id == candidate_id).first()
+    return db.query(CandidateProcessDetail).filter_by(candidate_id=candidate_id).first()
 
-def update_process_detail(db: Session, candidate_id: int, updates: CandidateProcessDetailUpdate):
-    detail = get_process_detail_by_candidate(db, candidate_id)
-    if not detail:
-        return None
-
-    for field, value in updates.dict(exclude_unset=True).items():
-        setattr(detail, field, value)
-        setattr(detail, f"{field}_updated_at", datetime.utcnow())
-
-    db.commit()
-    db.refresh(detail)
-    return detail
-
-def create_process_detail_if_not_exists(db: Session, candidate_id: int) -> CandidateProcessDetail:
-    existing = db.query(CandidateProcessDetail).filter_by(candidate_id=candidate_id).first()
+def create_candidate_process_detail(db: Session, candidate_id: int):
+    existing = get_process_detail_by_candidate(db, candidate_id)
     if existing:
-        raise HTTPException(status_code=400, detail="Process detail already exists for this candidate")
-
+        return None
     new_detail = CandidateProcessDetail(candidate_id=candidate_id)
     db.add(new_detail)
     db.commit()
     db.refresh(new_detail)
     return new_detail
+
+def update_process_detail(db: Session, candidate_id: int, update_data: dict):
+    detail = get_process_detail_by_candidate(db, candidate_id)
+    if not detail:
+        return None
+    for field, value in update_data.items():
+        setattr(detail, field, value)
+        if not field.endswith("_updated_at"):
+            updated_field = f"{field}_updated_at"
+            if hasattr(detail, updated_field):
+                setattr(detail, updated_field, datetime.utcnow())
+    db.commit()
+    db.refresh(detail)
+    return detail
