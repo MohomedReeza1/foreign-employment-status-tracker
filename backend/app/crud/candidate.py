@@ -42,35 +42,72 @@ def update_process(db: Session, process_id: int, update_data: dict):
 def get_candidate_by_passport(db: Session, passport_number: str):
     return db.query(Candidate).filter(Candidate.passport_number == passport_number).first()
 
+# def get_all_candidates_with_latest_status(db: Session):
+#     candidates = db.query(Candidate).all()
+#     stage_priority = {
+#         "medical": 1,
+#         "visa": 2,
+#         "embassy": 3,
+#         "ticket": 4,
+#         "departure": 5
+#     }
+#     results = []
+
+#     for c in candidates:
+#         # Sort processes by stage priority
+#         processes = sorted(
+#             c.processes,
+#             key=lambda p: stage_priority.get(p.stage.lower(), 0),
+#             reverse=True
+#         )
+#         latest = processes[0] if processes else None
+
+#         results.append({
+#             "id": c.id,
+#             "full_name": c.full_name,
+#             "passport_number": c.passport_number,
+#             "nic": c.nic,
+#             "reference_number": c.reference_number,
+#             "status": latest.stage if latest else None
+#         })
+
+#     return results
+
 def get_all_candidates_with_latest_status(db: Session):
     candidates = db.query(Candidate).all()
-    stage_priority = {
-        "medical": 1,
-        "visa": 2,
-        "embassy": 3,
-        "ticket": 4,
-        "departure": 5
-    }
+
+    # Ordered list of process steps
+    process_order = [
+        ("passport_register_date", "Passport Registered"),
+        ("application_sent_date", "Application Sent"),
+        ("applied_job", "Job Applied"),
+        ("office_name", "Office Selected"),
+        ("visa_status", "Visa Processed"),
+        ("medical", "Medical Done"),
+        ("agreement", "Agreement Signed"),
+        ("embassy", "Embassy Visit"),
+        ("slbfe_approval", "SLBFE Approved"),
+        ("departure_date", "Departed")
+    ]
     results = []
 
     for c in candidates:
-        # Sort processes by stage priority
-        processes = sorted(
-            c.processes,
-            key=lambda p: stage_priority.get(p.stage.lower(), 0),
-            reverse=True
-        )
-        latest = processes[0] if processes else None
-
+        detail = c.process_detail
+        latest_status = None
+        if detail:
+            for field, label in reversed(process_order):  # Check from last to first
+                value = getattr(detail, field, None)
+                if value not in [None, "", False]:  # Consider filled if not blank/false
+                    latest_status = label
+                    break
         results.append({
             "id": c.id,
             "full_name": c.full_name,
             "passport_number": c.passport_number,
             "nic": c.nic,
             "reference_number": c.reference_number,
-            "status": latest.stage if latest else None
+            "status": latest_status
         })
-
     return results
 
 # Process Detail Functions
