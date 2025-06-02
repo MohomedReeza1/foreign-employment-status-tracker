@@ -40,3 +40,9 @@ class CandidateProcessOut(CandidateProcessBase):
 class ProcessUpdate(BaseModel):
     status: Optional[str] = None
     updated_at: Optional[date] = None
+
+class PaginatedCandidateResponse(BaseModel):
+    data: List[CandidateWithStatusOut]
+    total: int
+    page: int
+    limit: int
