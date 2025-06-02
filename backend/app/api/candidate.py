@@ -64,3 +64,7 @@ def update_process_detail(candidate_id: int, data: CandidateProcessDetailUpdate,
     if not updated:
         raise HTTPException(status_code=404, detail="Candidate process detail not found")
     return updated
+
+@router.post("/candidate-details/{candidate_id}", response_model=CandidateProcessDetailResponse)
+def create_candidate_process_detail(candidate_id: int, db: Session = Depends(get_db)):
+    return crud.create_process_detail_if_not_exists(db, candidate_id)

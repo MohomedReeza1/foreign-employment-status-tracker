@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from app.models.candidate import Candidate, CandidateProcess
 from app.schemas.candidate import CandidateCreate, CandidateProcessCreate
+from fastapi import HTTPException
 
 from app.models.candidate_process_detail import CandidateProcessDetail
 from app.schemas.candidate_process_detail import CandidateProcessDetailUpdate
@@ -88,3 +89,14 @@ def update_process_detail(db: Session, candidate_id: int, updates: CandidateProc
     db.commit()
     db.refresh(detail)
     return detail
+
+def create_process_detail_if_not_exists(db: Session, candidate_id: int) -> CandidateProcessDetail:
+    existing = db.query(CandidateProcessDetail).filter_by(candidate_id=candidate_id).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Process detail already exists for this candidate")
+
+    new_detail = CandidateProcessDetail(candidate_id=candidate_id)
+    db.add(new_detail)
+    db.commit()
+    db.refresh(new_detail)
+    return new_detail
