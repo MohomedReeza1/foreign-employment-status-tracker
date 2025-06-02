@@ -4,6 +4,9 @@ from app.database import SessionLocal
 from app.schemas.candidate import *
 from app.crud import candidate as crud
 
+from app.schemas.candidate_process_detail import CandidateProcessDetailUpdate
+from app.schemas.candidate_process_detail import CandidateProcessDetailResponse, CandidateProcessDetailUpdate
+
 router = APIRouter()
 
 def get_db():
@@ -46,4 +49,18 @@ def update_process(process_id: int, update: ProcessUpdate, db: Session = Depends
     updated = crud.update_process(db, process_id, update.dict(exclude_unset=True))
     if not updated:
         raise HTTPException(status_code=404, detail="Process not found")
+    return updated
+
+@router.get("/candidate-details/{candidate_id}", response_model=CandidateProcessDetailResponse)
+def get_process_detail(candidate_id: int, db: Session = Depends(get_db)):
+    detail = crud.get_process_detail_by_candidate(db, candidate_id)
+    if not detail:
+        raise HTTPException(status_code=404, detail="Process details not found")
+    return detail
+
+@router.put("/candidate-details/{candidate_id}", response_model=CandidateProcessDetailResponse)
+def update_process_detail(candidate_id: int, data: CandidateProcessDetailUpdate, db: Session = Depends(get_db)):
+    updated = crud.update_process_detail(db, candidate_id, data)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Candidate process detail not found")
     return updated
