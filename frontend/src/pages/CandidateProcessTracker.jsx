@@ -11,24 +11,33 @@ const CandidateProcessTracker = ({ candidateId }) => {
   const navigate = useNavigate()
   const { role } = useAuth()
 
-  useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        // ✅ Fetch candidate basic info
+useEffect(() => {
+  const fetchDetails = async () => {
+    try {
+        // Fetch candidate basic info
         const candidateRes = await api.get(`/candidates/${candidateId}`)
         setCandidate(candidateRes.data)
 
-        const res = await api.get(`/candidate-details/${candidateId}`);
-        setForm(res.data);
-
-      } catch (err) {
-        console.error("Error fetching candidate details:", err);
-      } finally {
-        setLoading(false);
+      const res = await api.get(`/candidate-details/${candidateId}`);
+      setForm(res.data);
+    } catch (err) {
+      if (err.response?.status === 404) {
+        // Process not started for this candidate → create blank row
+        try {
+          const createRes = await api.post(`/candidate-details/${candidateId}`);
+          setForm(createRes.data);
+        } catch (createErr) {
+          console.error("Error creating process detail:", createErr);
+        }
+      } else {
+        console.error("Unexpected error:", err);
       }
-    };
-    fetchDetails();
-  }, [candidateId]);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchDetails();
+}, [candidateId]);
 
   const handleUpdate = async (field, value) => {
     try {
@@ -43,7 +52,7 @@ const CandidateProcessTracker = ({ candidateId }) => {
     //   });
     //   const data = await res.json();
     //   setForm((prev) => ({ ...prev, ...data }));
-    
+
     } catch (err) {
       console.error("Error updating field:", err);
     }
