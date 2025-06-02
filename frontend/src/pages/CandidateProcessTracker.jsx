@@ -76,7 +76,7 @@ const CandidateProcessTracker = ({ candidateId }) => {
       <div className="max-w-5xl mx-auto p-6 bg-white shadow rounded-xl mt-6">
         <div className="flex justify-between items-center mb-4">
           <button onClick={() => navigate('/dashboard')} className="text-blue-600 hover:underline">← Back to Dashboard</button>
-          {!editMode && (
+          {role === 'processor' && !editMode && (
             <button onClick={() => setEditMode(true)} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Edit</button>
           )}
         </div>
