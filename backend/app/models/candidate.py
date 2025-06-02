@@ -12,6 +12,7 @@ class Candidate(Base):
 
     # Relationship to process tracker
     processes = relationship("CandidateProcess", back_populates="candidate")
+    process_detail = relationship("CandidateProcessDetail", back_populates="candidate", uselist=False)
 
 
 class CandidateProcess(Base):
