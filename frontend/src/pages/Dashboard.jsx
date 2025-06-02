@@ -3,6 +3,7 @@ import api from '../api/axios'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Header from '../components/Header'
+import { Link } from 'react-router-dom'
 
 export default function Dashboard() {
   const [candidates, setCandidates] = useState([])
@@ -108,7 +109,10 @@ export default function Dashboard() {
                   <td className="px-6 py-4">{c.status || 'Not Started'}</td>
                   <td className="px-6 py-4">
                     <button className="text-blue-600 hover:underline">
-                      <a href={`/tracker/${c.id}`} className="text-blue-600 hover:underline">View</a>
+                      {/* <Link to={`/tracker/${c.id}`}>View</Link> */}
+                      <Link to={`/candidate/${c.id}/process-tracker`}>
+                        View
+                      </Link>
                     </button>
                   </td>
                 </tr>

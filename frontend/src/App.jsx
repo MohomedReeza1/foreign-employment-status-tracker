@@ -4,6 +4,8 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import CandidateTracker from './pages/CandidateTracker'
 import CandidateForm from './pages/CandidateForm'
+import CandidateProcessTracker from "./pages/CandidateProcessTracker";
+import CandidateProcessTrackerWrapper from './pages/CandidateProcessTrackerWrapper'
 
 function App() {
   return (
@@ -20,9 +22,9 @@ function App() {
       <Route
         path="/tracker/:id"
         element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <CandidateTracker />
-          // </PrivateRoute>
+          </PrivateRoute>
         }
       />
       <Route
@@ -33,6 +35,15 @@ function App() {
           </PrivateRoute>
         }
       />
+      <Route
+        path="/candidate/:id/process-tracker"
+        element={
+          <PrivateRoute>
+            <CandidateProcessTrackerWrapper />
+          </PrivateRoute>
+        }
+      />
+
     </Routes>
   )
 }

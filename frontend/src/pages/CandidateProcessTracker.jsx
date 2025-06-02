@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import api from '../api/axios'
+import Header from '../components/Header'
 
 const CandidateProcessTracker = ({ candidateId }) => {
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
+  const { role } = useAuth()
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
         const res = await fetch(`/api/candidate-details/${candidateId}`);
+        // const res = await api.get(`/candidate-details/${candidateId}`);
         const data = await res.json();
         setForm(data);
       } catch (err) {
@@ -41,6 +48,8 @@ const CandidateProcessTracker = ({ candidateId }) => {
   if (loading) return <p>Loading...</p>;
 
   return (
+    <>
+    <Header />
     <div className="max-w-3xl mx-auto p-4">
       <h2 className="text-xl font-semibold mb-4">Process Tracker</h2>
 
@@ -198,6 +207,7 @@ const CandidateProcessTracker = ({ candidateId }) => {
         />
       </div>
     </div>
+    </>
   );
 };
 
