@@ -92,11 +92,12 @@ def update_process_detail(db: Session, candidate_id: int, update_data: dict):
     if not detail:
         return None
     for field, value in update_data.items():
-        setattr(detail, field, value)
-        if not field.endswith("_updated_at"):
-            updated_field = f"{field}_updated_at"
-            if hasattr(detail, updated_field):
-                setattr(detail, updated_field, datetime.utcnow())
+        if hasattr(detail, field) and getattr(detail, field) != value:
+            setattr(detail, field, value)
+            if hasattr(detail, f"{field}_updated_at"):
+                setattr(detail, f"{field}_updated_at", datetime.utcnow())
     db.commit()
     db.refresh(detail)
     return detail
+
+    
