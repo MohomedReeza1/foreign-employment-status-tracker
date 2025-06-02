@@ -27,6 +27,7 @@ const CandidateProcessTracker = ({ candidateId }) => {
             setForm(createRes.data);
           } catch (createErr) {
             console.error("Error creating process detail:", createErr);
+            setForm({});
           }
         } else {
           console.error("Unexpected error:", err);
