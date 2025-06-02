@@ -66,7 +66,22 @@ const CandidateProcessTracker = ({ candidateId }) => {
   };
 
   const renderUpdatedAt = (field) =>
-    form[`${field}_updated_at`] ? new Date(form[`${field}_updated_at`]).toLocaleString() : "-";
+    form[`${field}_updated_at`]
+      ? new Date(form[`${field}_updated_at`]).toLocaleString("en-US", {
+          timeZone: "Asia/Colombo",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        })
+      : "-";
+
+  const isFieldCompleted = (field) => {
+    const value = form[field];
+    return value !== null && value !== undefined && value !== "";
+  };
 
   if (loading) return <p className="text-center text-gray-600">Loading...</p>;
 
@@ -103,9 +118,20 @@ const CandidateProcessTracker = ({ candidateId }) => {
           {renderSelect("Embassy", "embassy", ["Done", "Not Done"])}
           <InputRow label="SLBFE Approval">
             {editMode ? (
-              <input type="checkbox" checked={form.slbfe_approval ?? false} onChange={(e) => handleChange("slbfe_approval", e.target.checked)} className="h-5 w-5" />
+              <input
+                type="checkbox"
+                checked={form.slbfe_approval ?? false}
+                onChange={(e) => handleChange("slbfe_approval", e.target.checked)}
+                className={`h-5 w-5 ${isFieldCompleted("slbfe_approval") ? "ring-2 ring-green-400" : ""}`}
+              />
             ) : (
-              <div className="w-full border rounded px-3 py-2 min-h-[40px] bg-gray-100 text-gray-700">{form.slbfe_approval ? "✅ Yes" : "❌ No"}</div>
+              <div
+                className={`w-full border rounded px-3 py-2 min-h-[40px] ${
+                  isFieldCompleted("slbfe_approval") ? "border-green-500 bg-green-50" : "bg-gray-100"
+                } text-gray-700`}
+              >
+                {form.slbfe_approval ? "✅ Yes" : "❌ No"}
+              </div>
             )}
             {renderUpdatedAt("slbfe_approval")}
           </InputRow>
@@ -115,9 +141,22 @@ const CandidateProcessTracker = ({ candidateId }) => {
         <div className="mt-6">
           <label className="block font-medium mb-1 text-gray-700">Remarks</label>
           {editMode ? (
-            <textarea className="w-full border rounded-md p-2 bg-white min-h-[80px]" rows={3} value={form.remarks ?? ""} onChange={(e) => handleChange("remarks", e.target.value)} />
+            <textarea
+              className={`w-full border rounded-md p-2 bg-white min-h-[80px] ${
+                isFieldCompleted("remarks") ? "border-green-500 bg-green-50" : ""
+              }`}
+              rows={3}
+              value={form.remarks ?? ""}
+              onChange={(e) => handleChange("remarks", e.target.value)}
+            />
           ) : (
-            <div className="w-full border rounded px-3 py-2 min-h-[80px] bg-gray-100 text-gray-700">{form.remarks || "—"}</div>
+            <div
+              className={`w-full border rounded px-3 py-2 min-h-[80px] ${
+                isFieldCompleted("remarks") ? "border-green-500 bg-green-50" : "bg-gray-100"
+              } text-gray-700`}
+            >
+              {form.remarks || "—"}
+            </div>
           )}
         </div>
 
@@ -132,12 +171,21 @@ const CandidateProcessTracker = ({ candidateId }) => {
   );
 
   function renderInput(label, field, type = "text") {
+    const commonClasses = `w-full border rounded px-3 py-2 min-h-[40px] ${
+      isFieldCompleted(field) ? "border-green-500 bg-green-50" : "bg-gray-100"
+    } text-gray-700`;
+
     return (
       <InputRow label={label}>
         {editMode ? (
-          <input type={type} value={form[field] ?? ""} onChange={(e) => handleChange(field, e.target.value)} className="w-full border rounded px-3 py-2 min-h-[40px]" />
+          <input
+            type={type}
+            value={form[field] ?? ""}
+            onChange={(e) => handleChange(field, e.target.value)}
+            className={commonClasses}
+          />
         ) : (
-          <div className="w-full border rounded px-3 py-2 min-h-[40px] bg-gray-100 text-gray-700">{form[field] || "—"}</div>
+          <div className={commonClasses}>{form[field] || "—"}</div>
         )}
         {renderUpdatedAt(field)}
       </InputRow>
@@ -145,15 +193,23 @@ const CandidateProcessTracker = ({ candidateId }) => {
   }
 
   function renderSelect(label, field, options) {
+    const commonClasses = `w-full border rounded px-3 py-2 min-h-[40px] ${
+      isFieldCompleted(field) ? "border-green-500 bg-green-50" : "bg-gray-100"
+    } text-gray-700`;
+
     return (
       <InputRow label={label}>
         {editMode ? (
-          <select value={form[field] ?? ""} onChange={(e) => handleChange(field, e.target.value)} className="w-full border rounded px-3 py-2 min-h-[40px]">
+          <select
+            value={form[field] ?? ""}
+            onChange={(e) => handleChange(field, e.target.value)}
+            className={commonClasses}
+          >
             <option value="">-- Select --</option>
             {options.map((option) => <option key={option} value={option}>{option}</option>)}
           </select>
         ) : (
-          <div className="w-full border rounded px-3 py-2 min-h-[40px] bg-gray-100 text-gray-700">{form[field] || "—"}</div>
+          <div className={commonClasses}>{form[field] || "—"}</div>
         )}
         {renderUpdatedAt(field)}
       </InputRow>

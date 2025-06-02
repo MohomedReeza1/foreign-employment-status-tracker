@@ -14,7 +14,7 @@ export default function Header() {
   return (
     <div className="bg-white shadow p-4 mb-4 flex justify-between items-center">
       <div className="text-gray-800 font-semibold text-lg">
-        Foreign Employment Tracker
+        Kuwait Recruitment Tracker
       </div>
       <div className="flex items-center gap-4">
         {role && (
