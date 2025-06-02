@@ -80,7 +80,7 @@ def get_process_detail_by_candidate(db: Session, candidate_id: int):
 def create_candidate_process_detail(db: Session, candidate_id: int):
     existing = get_process_detail_by_candidate(db, candidate_id)
     if existing:
-        return None
+        return existing
     new_detail = CandidateProcessDetail(candidate_id=candidate_id)
     db.add(new_detail)
     db.commit()
