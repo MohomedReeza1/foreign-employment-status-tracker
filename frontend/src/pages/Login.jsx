@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import Header from '../components/Header'
+import LoginHeader from '../components/LoginHeader'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -40,6 +42,8 @@ export default function Login() {
   }
 
   return (
+    <>
+    <LoginHeader />
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form onSubmit={handleLogin} className="bg-white p-8 rounded shadow-md w-96">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
@@ -68,5 +72,6 @@ export default function Login() {
         </button>
       </form>
     </div>
+    </>
   )
 }
