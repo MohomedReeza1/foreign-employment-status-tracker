@@ -18,7 +18,8 @@ class CandidateOut(CandidateBase):
 
 class CandidateWithStatusOut(CandidateBase):
     id: int
-    status: Optional[str]
+    latest_stage: str
+    status: str
 
     class Config:
         orm_mode = True

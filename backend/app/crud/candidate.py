@@ -112,17 +112,16 @@ def get_candidates_with_latest_status_paginated(db: Session, page: int = 1, limi
     candidates = db.query(Candidate).offset(skip).limit(limit).all()
     total = db.query(Candidate).count()
 
-    # Ordered process fields and labels
     process_order = [
         ("passport_register_date", "Passport Registered"),
         ("application_sent_date", "Application Sent"),
         ("applied_job", "Job Applied"),
         ("office_name", "Office Selected"),
-        ("visa_status", "Visa Processed"),
-        ("medical", "Medical Done"),
-        ("agreement", "Agreement Signed"),
-        ("embassy", "Embassy Visit"),
-        ("slbfe_approval", "SLBFE Approved"),
+        ("visa_status", "Visa Status"),
+        ("medical", "Medical Status"),
+        ("agreement", "Agreement Status"),
+        ("embassy", "Embassy Status"),
+        ("slbfe_approval", "SLBFE Status"),
         ("departure_date", "Departed")
     ]
 
@@ -130,13 +129,15 @@ def get_candidates_with_latest_status_paginated(db: Session, page: int = 1, limi
 
     for c in candidates:
         detail = c.process_detail
-        latest_status = None
+        latest_stage = None
+        status_value = "-"
 
         if detail:
             for field, label in reversed(process_order):
                 value = getattr(detail, field, None)
                 if value not in [None, "", False]:
-                    latest_status = field  # use label instead if needed
+                    latest_stage = label
+                    status_value = str(value) if not isinstance(value, bool) else ("Yes" if value else "No")
                     break
 
         results.append({
@@ -145,7 +146,8 @@ def get_candidates_with_latest_status_paginated(db: Session, page: int = 1, limi
             "passport_number": c.passport_number,
             "nic": c.nic,
             "reference_number": c.reference_number,
-            "status": latest_status
+            "latest_stage": latest_stage or "Not Started",
+            "status": status_value
         })
 
     return {
