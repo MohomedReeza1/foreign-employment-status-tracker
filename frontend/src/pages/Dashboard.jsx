@@ -164,45 +164,6 @@ export default function Dashboard() {
             </table>
           </div>
 
-          {/* Pagination Controls */}
-          {/* <div className="flex justify-between items-center mt-6">
-            <div className="flex items-center gap-4">
-              <label className="text-sm text-gray-600">Rows per page:</label>
-              <select
-                className="border rounded px-2 py-1"
-                value={limit}
-                onChange={(e) => {
-                  setPage(1)
-                  setLimit(parseInt(e.target.value))
-                }}
-              >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="25">25</option>
-              </select>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                disabled={page === 1}
-                className="px-4 py-2 border rounded disabled:opacity-50"
-              >
-                Prev
-              </button>
-              <span className="text-gray-700">
-                Page {page} of {totalPages}
-              </span>
-              <button
-                onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-                disabled={page === totalPages}
-                className="px-4 py-2 border rounded disabled:opacity-50"
-              >
-                Next
-              </button>
-            </div>
-          </div> */}
-
           {/* Material Pagination Controls */}
           <div className="flex flex-col md:flex-row items-center justify-between mt-6 gap-4">
             <FormControl variant="outlined" size="small" className="min-w-[120px]">
