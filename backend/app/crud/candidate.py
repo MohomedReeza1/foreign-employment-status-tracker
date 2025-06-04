@@ -137,7 +137,7 @@ def get_candidates_with_latest_status_paginated(db: Session, page: int = 1, limi
                 value = getattr(detail, field, None)
                 if value not in [None, "", False]:
                     latest_stage = label
-                    status_value = str(value) if not isinstance(value, bool) else ("Yes" if value else "No")
+                    status_value = str(value) if not isinstance(value, bool) else ("✅ Approved" if value else "❌ Not Approved")
                     break
 
         results.append({
