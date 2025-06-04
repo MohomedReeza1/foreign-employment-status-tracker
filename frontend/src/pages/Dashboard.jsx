@@ -1,73 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import api from '../api/axios';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import Header from '../components/Header';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import api from '../api/axios'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import Header from '../components/Header'
+import { Link } from 'react-router-dom'
 
 export default function Dashboard() {
-  const [candidates, setCandidates] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [limit] = useState(10);
-  const [total, setTotal] = useState(0);
+  const [candidates, setCandidates] = useState([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState('')
+  const [loading, setLoading] = useState(true)
 
-  const navigate = useNavigate();
-  const { role } = useAuth();
+  // Pagination state
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(10)
+  const [total, setTotal] = useState(0)
+
+  const navigate = useNavigate()
+  const { role } = useAuth()
 
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
-        setLoading(true);
-        const res = await api.get(`/candidates/paginated?page=${page}&limit=${limit}`);
-        setCandidates(res.data.data);
-        setTotal(res.data.total);
+        setLoading(true)
+        const res = await api.get(`/candidates/paginated`, {
+          params: {
+            page,
+            limit,
+            search: searchQuery,
+            stage: statusFilter
+          }
+        })
+        setCandidates(res.data.data)
+        setTotal(res.data.total)
       } catch (error) {
-        console.error('Failed to fetch candidates:', error);
+        console.error('Failed to fetch candidates:', error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
-
-    fetchCandidates();
-  }, [page, limit]);
-
-  const filteredCandidates = candidates.filter((c) => {
-    const fullName = c.full_name || '';
-    const passport = c.passport_number || '';
-    const stage = c.latest_stage || 'Not Started';
-
-    const matchSearch =
-      fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      passport.toLowerCase().includes(searchQuery.toLowerCase());
-
-    const matchStatus = statusFilter
-      ? stage.toLowerCase() === statusFilter.toLowerCase()
-      : true;
-
-    return matchSearch && matchStatus;
-  });
-
-  const totalPages = Math.ceil(total / limit);
-
-  const getStageBadgeClass = (stage) => {
-    switch (stage) {
-      case 'Passport Registered': return 'bg-blue-200 text-blue-800';
-      case 'Application Sent': return 'bg-indigo-200 text-indigo-800';
-      case 'Job Applied': return 'bg-gray-300 text-gray-800';
-      case 'Office Selected': return 'bg-purple-200 text-purple-800';
-      case 'Visa Status': return 'bg-yellow-200 text-yellow-800';
-      case 'Medical Status': return 'bg-emerald-200 text-emerald-800';
-      case 'Agreement Status': return 'bg-cyan-200 text-cyan-800';
-      case 'Embassy Status': return 'bg-fuchsia-200 text-fuchsia-800';
-      case 'SLBFE Status': return 'bg-orange-200 text-orange-800';
-      case 'Departed': return 'bg-green-200 text-green-800';
-      case 'Not Started': return 'bg-red-100 text-red-600';
-      default: return 'bg-gray-100 text-gray-600';
     }
-  };
+
+    fetchCandidates()
+  }, [page, limit, searchQuery, statusFilter])
+
+  const totalPages = Math.ceil(total / limit)
 
   return (
     <>
@@ -83,17 +59,22 @@ export default function Dashboard() {
                 type="text"
                 placeholder="Search by Name or Passport No"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value)
+                  setPage(1)
+                }}
                 className="border border-gray-300 px-4 py-2 rounded w-full md:w-1/3"
               />
 
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
+                onChange={(e) => {
+                  setStatusFilter(e.target.value)
+                  setPage(1)
+                }}
                 className="border border-gray-300 px-4 py-2 rounded w-full md:w-1/4"
               >
                 <option value="">Filter by Latest Stage</option>
-                <option value="Not Started">Not Started</option>
                 <option value="Passport Registered">Passport Registered</option>
                 <option value="Application Sent">Application Sent</option>
                 <option value="Job Applied">Job Applied</option>
@@ -134,27 +115,37 @@ export default function Dashboard() {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan="7" className="text-center py-4 text-gray-500">Loading...</td>
+                    <td colSpan="7" className="text-center py-4 text-gray-500">
+                      Loading...
+                    </td>
                   </tr>
-                ) : filteredCandidates.length === 0 ? (
+                ) : candidates.length === 0 ? (
                   <tr>
-                    <td colSpan="7" className="text-center py-4 text-gray-500">No candidates found.</td>
+                    <td colSpan="7" className="text-center py-4 text-gray-500">
+                      No candidates found.
+                    </td>
                   </tr>
                 ) : (
-                  filteredCandidates.map((c, index) => (
+                  candidates.map((c, index) => (
                     <tr key={index} className="border-b">
                       <td className="px-6 py-4">{c.full_name}</td>
                       <td className="px-6 py-4">{c.passport_number}</td>
                       <td className="px-6 py-4">{c.nic}</td>
                       <td className="px-6 py-4">{c.reference_number}</td>
                       <td className="px-6 py-4">
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStageBadgeClass(c.latest_stage)}`}>
+                        <span className={`px-3 py-1 text-sm rounded-full font-medium
+                          ${
+                            c.latest_stage === 'Departed' ? 'bg-green-200 text-green-800' :
+                            c.latest_stage === 'SLBFE Approved' ? 'bg-orange-200 text-orange-800' :
+                            c.latest_stage === 'Office Selected' ? 'bg-purple-200 text-purple-800' :
+                            c.latest_stage === 'Not Started' ? 'bg-red-200 text-red-700' :
+                            'bg-gray-200 text-gray-700'
+                          }
+                        `}>
                           {c.latest_stage || 'Not Started'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-700">
-                        {c.status || '—'}
-                      </td>
+                      <td className="px-6 py-4 text-red-600">{c.status || '—'}</td>
                       <td className="px-6 py-4">
                         <Link to={`/candidate/${c.id}/process-tracker`} className="text-blue-600 hover:underline">
                           View
@@ -168,27 +159,45 @@ export default function Dashboard() {
           </div>
 
           {/* Pagination Controls */}
-          <div className="flex justify-center items-center gap-4 mt-6">
-            <button
-              onClick={() => setPage((p) => Math.max(p - 1, 1))}
-              disabled={page === 1}
-              className="px-4 py-2 border rounded disabled:opacity-50"
-            >
-              Prev
-            </button>
-            <span className="text-gray-700">
-              Page {page} of {totalPages}
-            </span>
-            <button
-              onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-              disabled={page === totalPages}
-              className="px-4 py-2 border rounded disabled:opacity-50"
-            >
-              Next
-            </button>
+          <div className="flex justify-between items-center mt-6">
+            <div className="flex items-center gap-4">
+              <label className="text-sm text-gray-600">Rows per page:</label>
+              <select
+                className="border rounded px-2 py-1"
+                value={limit}
+                onChange={(e) => {
+                  setPage(1)
+                  setLimit(parseInt(e.target.value))
+                }}
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                disabled={page === 1}
+                className="px-4 py-2 border rounded disabled:opacity-50"
+              >
+                Prev
+              </button>
+              <span className="text-gray-700">
+                Page {page} of {totalPages}
+              </span>
+              <button
+                onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+                disabled={page === totalPages}
+                className="px-4 py-2 border rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }
