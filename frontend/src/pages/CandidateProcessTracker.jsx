@@ -130,7 +130,7 @@ const CandidateProcessTracker = ({ candidateId }) => {
                   isFieldCompleted("slbfe_approval") ? "border-green-500 bg-green-50" : "bg-gray-100"
                 } text-gray-700`}
               >
-                {form.slbfe_approval ? "✅ Yes" : "❌ No"}
+                {form.slbfe_approval ? "✅ Approved" : "❌ Not Approved"}
               </div>
             )}
             {renderUpdatedAt("slbfe_approval")}

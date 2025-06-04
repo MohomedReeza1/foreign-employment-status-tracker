@@ -56,14 +56,14 @@ export default function Dashboard() {
     switch (stage) {
       case 'Passport Registered': return 'bg-blue-200 text-blue-800';
       case 'Application Sent': return 'bg-indigo-200 text-indigo-800';
-      case 'Job Applied': return 'bg-green-200 text-green-800';
+      case 'Job Applied': return 'bg-gray-300 text-gray-800';
       case 'Office Selected': return 'bg-purple-200 text-purple-800';
-      case 'Visa Processed': return 'bg-yellow-200 text-yellow-800';
-      case 'Medical Done': return 'bg-emerald-200 text-emerald-800';
-      case 'Agreement Signed': return 'bg-cyan-200 text-cyan-800';
-      case 'Embassy Visit': return 'bg-fuchsia-200 text-fuchsia-800';
-      case 'SLBFE Approved': return 'bg-orange-200 text-orange-800';
-      case 'Departed': return 'bg-gray-300 text-gray-800';
+      case 'Visa Status': return 'bg-yellow-200 text-yellow-800';
+      case 'Medical Status': return 'bg-emerald-200 text-emerald-800';
+      case 'Agreement Status': return 'bg-cyan-200 text-cyan-800';
+      case 'Embassy Status': return 'bg-fuchsia-200 text-fuchsia-800';
+      case 'SLBFE Status': return 'bg-orange-200 text-orange-800';
+      case 'Departed': return 'bg-green-200 text-green-800';
       case 'Not Started': return 'bg-red-100 text-red-600';
       default: return 'bg-gray-100 text-gray-600';
     }
@@ -92,17 +92,17 @@ export default function Dashboard() {
                 onChange={(e) => setStatusFilter(e.target.value)}
                 className="border border-gray-300 px-4 py-2 rounded w-full md:w-1/4"
               >
-                <option value="">Filter by Stage</option>
+                <option value="">Filter by Latest Stage</option>
                 <option value="Not Started">Not Started</option>
                 <option value="Passport Registered">Passport Registered</option>
                 <option value="Application Sent">Application Sent</option>
                 <option value="Job Applied">Job Applied</option>
                 <option value="Office Selected">Office Selected</option>
-                <option value="Visa Processed">Visa Status</option>
-                <option value="Medical Done">Medical Status</option>
-                <option value="Agreement Signed">Agreement Status</option>
-                <option value="Embassy Visit">Embassy Status</option>
-                <option value="SLBFE Approved">SLBFE Status</option>
+                <option value="Visa Status">Visa Status</option>
+                <option value="Medical Status">Medical Status</option>
+                <option value="Agreement Status">Agreement Status</option>
+                <option value="Embassy Status">Embassy Status</option>
+                <option value="SLBFE Status">SLBFE Status</option>
                 <option value="Departed">Departed</option>
               </select>
             </div>
