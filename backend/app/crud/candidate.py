@@ -106,12 +106,32 @@ def update_process_detail(db: Session, candidate_id: int, update_data: dict):
     db.refresh(detail)
     return detail
 
-# Pagination
-def get_candidates_with_latest_status_paginated(db: Session, page: int = 1, limit: int = 10):
+def get_candidates_with_latest_status_paginated(
+    db: Session,
+    page: int = 1,
+    limit: int = 10,
+    search: str = "",
+    stage: str = ""
+):
     skip = (page - 1) * limit
-    candidates = db.query(Candidate).offset(skip).limit(limit).all()
-    total = db.query(Candidate).count()
 
+    query = db.query(Candidate)
+
+    # Apply global search (by name or passport)
+    if search:
+        search = f"%{search.lower()}%"
+        query = query.filter(
+            Candidate.full_name.ilike(search) |
+            Candidate.passport_number.ilike(search)
+        )
+
+    # Order by newest candidates first (assuming id increments)
+    query = query.order_by(Candidate.id.desc())
+
+    all_candidates = query.all()
+    total = len(all_candidates)
+
+    # Process step mapping
     process_order = [
         ("passport_register_date", "Passport Registered"),
         ("application_sent_date", "Application Sent"),
@@ -126,8 +146,7 @@ def get_candidates_with_latest_status_paginated(db: Session, page: int = 1, limi
     ]
 
     results = []
-
-    for c in candidates:
+    for c in all_candidates:
         detail = c.process_detail
         latest_stage = None
         status_value = "-"
@@ -139,6 +158,10 @@ def get_candidates_with_latest_status_paginated(db: Session, page: int = 1, limi
                     latest_stage = label
                     status_value = str(value) if not isinstance(value, bool) else ("Approved" if value else "Not_Approved")
                     break
+        
+        # Apply stage filter
+        if stage and latest_stage != stage:
+            continue
 
         results.append({
             "id": c.id,
@@ -150,9 +173,11 @@ def get_candidates_with_latest_status_paginated(db: Session, page: int = 1, limi
             "status": status_value
         })
 
+    paginated_data = results[skip: skip + limit]
+
     return {
-        "data": results,
-        "total": total,
+        "data": paginated_data,
+        "total": len(results),
         "page": page,
         "limit": limit
     }

@@ -28,9 +28,13 @@ def search_candidate(passport: str, db: Session = Depends(get_db)):
 def get_paginated_candidates(
     page: int = 1,
     limit: int = 10,
+    search: str = "",
+    stage: str = "",
     db: Session = Depends(get_db)
 ):
-    return crud.get_candidates_with_latest_status_paginated(db, page=page, limit=limit)
+    return crud.get_candidates_with_latest_status_paginated(
+        db, page=page, limit=limit, search=search, stage=stage
+    )
 
 @router.get("/candidates/{candidate_id}", response_model=CandidateOut)
 def read_candidate(candidate_id: int, db: Session = Depends(get_db)):
