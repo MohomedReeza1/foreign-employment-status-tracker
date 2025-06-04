@@ -5,6 +5,12 @@ import { useAuth } from '../context/AuthContext'
 import Header from '../components/Header'
 import { Link } from 'react-router-dom'
 
+import Pagination from '@mui/material/Pagination';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+
 export default function Dashboard() {
   const [candidates, setCandidates] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
@@ -159,7 +165,7 @@ export default function Dashboard() {
           </div>
 
           {/* Pagination Controls */}
-          <div className="flex justify-between items-center mt-6">
+          {/* <div className="flex justify-between items-center mt-6">
             <div className="flex items-center gap-4">
               <label className="text-sm text-gray-600">Rows per page:</label>
               <select
@@ -195,7 +201,35 @@ export default function Dashboard() {
                 Next
               </button>
             </div>
+          </div> */}
+
+          {/* Material Pagination Controls */}
+          <div className="flex flex-col md:flex-row items-center justify-between mt-6 gap-4">
+            <FormControl variant="outlined" size="small" className="min-w-[120px]">
+              <InputLabel>Rows per page</InputLabel>
+              <Select
+                value={limit}
+                onChange={(e) => {
+                  setPage(1); // reset to page 1
+                  setLimit(Number(e.target.value));
+                }}
+                label="Rows per page"
+              >
+                {[5, 10, 25].map((val) => (
+                  <MenuItem key={val} value={val}>{val}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <Pagination
+              count={totalPages}
+              page={page}
+              onChange={(_, newPage) => setPage(newPage)}
+              color="primary"
+              shape="rounded"
+            />
           </div>
+
         </div>
       </div>
     </>
