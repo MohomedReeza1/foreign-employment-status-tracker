@@ -167,8 +167,8 @@ def get_candidates_with_latest_status_paginated(
             "id": c.id,
             "full_name": c.full_name,
             "passport_number": c.passport_number,
-            "nic": c.nic,
             "reference_number": c.reference_number,
+            "created_at": c.created_at,
             "latest_stage": latest_stage or "Not Started",
             "status": status_value
         })
