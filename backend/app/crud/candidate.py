@@ -156,7 +156,7 @@ def get_candidates_with_latest_status_paginated(
                 value = getattr(detail, field, None)
                 if value not in [None, "", False]:
                     latest_stage = label
-                    status_value = str(value) if not isinstance(value, bool) else ("Approved" if value else "Not_Approved")
+                    status_value = str(value)
                     break
         
         # Apply stage filter

@@ -1,6 +1,5 @@
-from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, Boolean, Text
+from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, Text
 from sqlalchemy.orm import relationship
-from datetime import datetime
 from app.database import Base
 
 class CandidateProcessDetail(Base):
@@ -33,7 +32,7 @@ class CandidateProcessDetail(Base):
     embassy = Column(String)
     embassy_updated_at = Column(DateTime)
 
-    slbfe_approval = Column(Boolean)
+    slbfe_approval = Column(String)
     slbfe_approval_updated_at = Column(DateTime)
 
     departure_date = Column(Date)
