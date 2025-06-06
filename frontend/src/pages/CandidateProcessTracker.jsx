@@ -108,15 +108,15 @@ const CandidateProcessTracker = ({ candidateId }) => {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {renderInput("Passport Register Date", "passport_register_date", "date")}
-          {renderInput("Application Sent Date", "application_sent_date", "date")}
-          {renderSelect("Applied Job", "applied_job", ["Housemaid", "Cook", "Caregiver", "Nurse"])}
-          {renderSelect("Office Name", "office_name", ["KANDARI", "FADAK"])}
-          {renderSelect("Visa Status", "visa_status", ["Waiting for Visa", "Keep Ready", "Received", "Cancel"])}
-          {renderSelect("Medical", "medical", ["Pending", "Recheck", "Fit", "Unfit"])}
-          {renderSelect("Agreement", "agreement", ["Hold", "Need Agreement", "Done"])}
-          {renderSelect("Embassy", "embassy", ["Done", "Not Done"])}
-          <InputRow label="SLBFE Approval">
+          {renderInput("1. Passport Register Date", "passport_register_date", "date")}
+          {renderInput("2. Application Sent Date", "application_sent_date", "date")}
+          {renderSelect("3. Applied Job", "applied_job", ["Housemaid", "Cook", "Caregiver", "Nurse"])}
+          {renderSelect("4. Office Name", "office_name", ["KANDARI", "FADAK"])}
+          {renderSelect("5. Visa Status", "visa_status", ["Waiting for Visa", "Keep Ready", "Received", "Cancel"])}
+          {renderSelect("6. Medical", "medical", ["Pending", "Recheck", "Fit", "Unfit"])}
+          {renderSelect("7. Agreement", "agreement", ["Hold", "Need Agreement", "Done"])}
+          {renderSelect("8. Embassy", "embassy", ["Done", "Not Done"])}
+          <InputRow label="9. SLBFE Approval">
             {editMode ? (
               <input
                 type="checkbox"
@@ -135,7 +135,7 @@ const CandidateProcessTracker = ({ candidateId }) => {
             )}
             {renderUpdatedAt("slbfe_approval")}
           </InputRow>
-          {renderInput("Departure Date", "departure_date", "date")}
+          {renderInput("10. Departure Date", "departure_date", "date")}
         </div>
 
         <div className="mt-6">
