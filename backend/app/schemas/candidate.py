@@ -1,11 +1,10 @@
 from pydantic import BaseModel
-from datetime import date
+from datetime import date, datetime
 from typing import List, Optional
 
 class CandidateBase(BaseModel):
     full_name: str
     passport_number: str
-    nic: str
     reference_number: str
 
 class CandidateCreate(CandidateBase):
@@ -13,16 +12,20 @@ class CandidateCreate(CandidateBase):
 
 class CandidateOut(CandidateBase):
     id: int
+    created_at: Optional[datetime]
+
     class Config:
         orm_mode = True
 
 class CandidateWithStatusOut(CandidateBase):
     id: int
-    latest_stage: str
-    status: str
+    created_at: Optional[datetime]
+    latest_stage: Optional[str]
+    status: Optional[str]
 
     class Config:
         orm_mode = True
+
 
 class CandidateProcessBase(BaseModel):
     stage: str

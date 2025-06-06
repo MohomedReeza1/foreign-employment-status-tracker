@@ -1,19 +1,20 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
+from datetime import datetime
 from app.database import Base
 
 class Candidate(Base):
     __tablename__ = "candidates"
-    id = Column(Integer, primary_key=True, index=True)
-    full_name = Column(String, nullable=False)
-    passport_number = Column(String, unique=True, index=True)
-    nic = Column(String, unique=True)
-    reference_number = Column(String, unique=True)
 
-    # Relationship to process tracker
+    id = Column(Integer, primary_key=True, index=True)
+    reference_number = Column(String, unique=True)
+    passport_number = Column(String, unique=True, index=True)
+    full_name = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationships
     processes = relationship("CandidateProcess", back_populates="candidate")
     process_detail = relationship("CandidateProcessDetail", back_populates="candidate", uselist=False)
-
 
 class CandidateProcess(Base):
     __tablename__ = "candidate_processes"
