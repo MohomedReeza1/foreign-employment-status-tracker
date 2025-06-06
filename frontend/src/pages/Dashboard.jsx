@@ -141,9 +141,16 @@ export default function Dashboard() {
                       <td className="px-6 py-4">
                         <span className={`px-3 py-1 text-sm rounded-full font-medium
                           ${
-                            c.latest_stage === 'Departed' ? 'bg-green-200 text-green-800' :
-                            c.latest_stage === 'SLBFE Approved' ? 'bg-orange-200 text-orange-800' :
+                            c.latest_stage === 'Passport Registered' ? 'bg-blue-200 text-blue-800' :
+                            c.latest_stage === 'Application Sent' ? 'bg-indigo-200 text-indigo-800' :
+                            c.latest_stage === 'Job Applied' ? 'bg-lime-100 text-lime-800' :
                             c.latest_stage === 'Office Selected' ? 'bg-purple-200 text-purple-800' :
+                            c.latest_stage === 'Visa Status' ? 'bg-yellow-200 text-yellow-800' : 
+                            c.latest_stage === 'Medical Status' ? 'bg-teal-50 text-emerald-800' : 
+                            c.latest_stage === 'Agreement Status' ? 'bg-cyan-200 text-cyan-800' : 
+                            c.latest_stage === 'Embassy Status' ? 'bg-fuchsia-200 text-fuchsia-800' : 
+                            c.latest_stage === 'SLBFE Status' ? 'bg-orange-200 text-orange-800' :
+                            c.latest_stage === 'Departed' ? 'bg-green-200 text-green-800' :
                             c.latest_stage === 'Not Started' ? 'bg-red-200 text-red-700' :
                             'bg-gray-200 text-gray-700'
                           }
