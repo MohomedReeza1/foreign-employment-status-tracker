@@ -51,6 +51,14 @@ export default function Dashboard() {
 
   const totalPages = Math.ceil(total / limit)
 
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-GB', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    })
+  }
+
   return (
     <>
       <Header />
@@ -109,10 +117,10 @@ export default function Dashboard() {
             <table className="min-w-full text-left table-auto">
               <thead>
                 <tr className="bg-gray-200">
+                  <th className="px-6 py-3 font-medium text-sm">Created Date</th>
+                  <th className="px-6 py-3 font-medium text-sm">Ref No</th>
                   <th className="px-6 py-3 font-medium text-sm">Full Name</th>
                   <th className="px-6 py-3 font-medium text-sm">Passport No</th>
-                  <th className="px-6 py-3 font-medium text-sm">NIC</th>
-                  <th className="px-6 py-3 font-medium text-sm">Ref No</th>
                   <th className="px-6 py-3 font-medium text-sm">Latest Stage</th>
                   <th className="px-6 py-3 font-medium text-sm">Status</th>
                   <th className="px-6 py-3 font-medium text-sm">Action</th>
@@ -121,23 +129,19 @@ export default function Dashboard() {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan="7" className="text-center py-4 text-gray-500">
-                      Loading...
-                    </td>
+                    <td colSpan="7" className="text-center py-4 text-gray-500">Loading...</td>
                   </tr>
                 ) : candidates.length === 0 ? (
                   <tr>
-                    <td colSpan="7" className="text-center py-4 text-gray-500">
-                      No candidates found.
-                    </td>
+                    <td colSpan="7" className="text-center py-4 text-gray-500">No candidates found.</td>
                   </tr>
                 ) : (
                   candidates.map((c, index) => (
                     <tr key={index} className="border-b">
+                      <td className="px-6 py-4 text-gray-700">{formatDate(c.created_at)}</td>
+                      <td className="px-6 py-4">{c.reference_number}</td>
                       <td className="px-6 py-4">{c.full_name}</td>
                       <td className="px-6 py-4">{c.passport_number}</td>
-                      <td className="px-6 py-4">{c.nic}</td>
-                      <td className="px-6 py-4">{c.reference_number}</td>
                       <td className="px-6 py-4">
                         <span className={`px-3 py-1 text-sm rounded-full font-medium
                           ${
@@ -178,8 +182,8 @@ export default function Dashboard() {
               <Select
                 value={limit}
                 onChange={(e) => {
-                  setPage(1); // reset to page 1
-                  setLimit(Number(e.target.value));
+                  setPage(1)
+                  setLimit(Number(e.target.value))
                 }}
                 label="Rows per page"
               >
@@ -197,7 +201,6 @@ export default function Dashboard() {
               shape="rounded"
             />
           </div>
-
         </div>
       </div>
     </>
