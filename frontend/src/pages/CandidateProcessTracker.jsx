@@ -116,25 +116,7 @@ const CandidateProcessTracker = ({ candidateId }) => {
           {renderSelect("6. Medical", "medical", ["Pending", "Recheck", "Fit", "Unfit"])}
           {renderSelect("7. Agreement", "agreement", ["Hold", "Need Agreement", "Done"])}
           {renderSelect("8. Embassy", "embassy", ["Done", "Not Done"])}
-          <InputRow label="9. SLBFE Approval">
-            {editMode ? (
-              <input
-                type="checkbox"
-                checked={form.slbfe_approval ?? false}
-                onChange={(e) => handleChange("slbfe_approval", e.target.checked)}
-                className={`h-5 w-5 ${isFieldCompleted("slbfe_approval") ? "ring-2 ring-green-400" : ""}`}
-              />
-            ) : (
-              <div
-                className={`w-full border rounded px-3 py-2 min-h-[40px] ${
-                  isFieldCompleted("slbfe_approval") ? "border-green-500 bg-green-50" : "bg-gray-100"
-                } text-gray-700`}
-              >
-                {form.slbfe_approval ? "✅ Approved" : "❌ Not Approved"}
-              </div>
-            )}
-            {renderUpdatedAt("slbfe_approval")}
-          </InputRow>
+          {renderSelect("9. SLBFE Approval", "slbfe_approval", ["Approved", "Not Approved"])}
           {renderInput("10. Departure Date", "departure_date", "date")}
         </div>
 
@@ -142,18 +124,14 @@ const CandidateProcessTracker = ({ candidateId }) => {
           <label className="block font-medium mb-1 text-gray-700">Remarks</label>
           {editMode ? (
             <textarea
-              className={`w-full border rounded-md p-2 bg-white min-h-[80px] ${
-                isFieldCompleted("remarks") ? "border-green-500 bg-green-50" : ""
-              }`}
+              className={`w-full border rounded-md p-2 bg-white min-h-[80px] ${isFieldCompleted("remarks") ? "border-green-500 bg-green-50" : ""}`}
               rows={3}
               value={form.remarks ?? ""}
               onChange={(e) => handleChange("remarks", e.target.value)}
             />
           ) : (
             <div
-              className={`w-full border rounded px-3 py-2 min-h-[80px] ${
-                isFieldCompleted("remarks") ? "border-green-500 bg-green-50" : "bg-gray-100"
-              } text-gray-700`}
+              className={`w-full border rounded px-3 py-2 min-h-[80px] ${isFieldCompleted("remarks") ? "border-green-500 bg-green-50" : "bg-gray-100"} text-gray-700`}
             >
               {form.remarks || "—"}
             </div>
@@ -171,60 +149,52 @@ const CandidateProcessTracker = ({ candidateId }) => {
   );
 
   function renderInput(label, field, type = "text") {
-    const commonClasses = `w-full border rounded px-3 py-2 min-h-[40px] ${
-      isFieldCompleted(field) ? "border-green-500 bg-green-50" : "bg-gray-100"
-    } text-gray-700`;
+    const commonClasses = `w-full border rounded px-3 py-2 min-h-[40px] ${isFieldCompleted(field) ? "border-green-500 bg-green-50" : "bg-gray-100"} text-gray-700`;
 
     return (
-      <InputRow label={label}>
-        {editMode ? (
-          <input
-            type={type}
-            value={form[field] ?? ""}
-            onChange={(e) => handleChange(field, e.target.value)}
-            className={commonClasses}
-          />
-        ) : (
-          <div className={commonClasses}>{form[field] || "—"}</div>
-        )}
-        {renderUpdatedAt(field)}
-      </InputRow>
+      <div className="flex flex-col">
+        <label className="text-sm font-medium text-gray-700 mb-1">{label}</label>
+        <div className="flex items-center gap-2">
+          {editMode ? (
+            <input
+              type={type}
+              value={form[field] ?? ""}
+              onChange={(e) => handleChange(field, e.target.value)}
+              className={commonClasses}
+            />
+          ) : (
+            <div className={commonClasses}>{form[field] || "—"}</div>
+          )}
+          <span className="text-xs text-gray-400 whitespace-nowrap">{renderUpdatedAt(field)}</span>
+        </div>
+      </div>
     );
   }
 
   function renderSelect(label, field, options) {
-    const commonClasses = `w-full border rounded px-3 py-2 min-h-[40px] ${
-      isFieldCompleted(field) ? "border-green-500 bg-green-50" : "bg-gray-100"
-    } text-gray-700`;
+    const commonClasses = `w-full border rounded px-3 py-2 min-h-[40px] ${isFieldCompleted(field) ? "border-green-500 bg-green-50" : "bg-gray-100"} text-gray-700`;
 
     return (
-      <InputRow label={label}>
-        {editMode ? (
-          <select
-            value={form[field] ?? ""}
-            onChange={(e) => handleChange(field, e.target.value)}
-            className={commonClasses}
-          >
-            <option value="">-- Select --</option>
-            {options.map((option) => <option key={option} value={option}>{option}</option>)}
-          </select>
-        ) : (
-          <div className={commonClasses}>{form[field] || "—"}</div>
-        )}
-        {renderUpdatedAt(field)}
-      </InputRow>
+      <div className="flex flex-col">
+        <label className="text-sm font-medium text-gray-700 mb-1">{label}</label>
+        <div className="flex items-center gap-2">
+          {editMode ? (
+            <select
+              value={form[field] ?? ""}
+              onChange={(e) => handleChange(field, e.target.value)}
+              className={commonClasses}
+            >
+              <option value="">-- Select --</option>
+              {options.map((option) => <option key={option} value={option}>{option}</option>)}
+            </select>
+          ) : (
+            <div className={commonClasses}>{form[field] || "—"}</div>
+          )}
+          <span className="text-xs text-gray-400 whitespace-nowrap">{renderUpdatedAt(field)}</span>
+        </div>
+      </div>
     );
   }
 };
-
-const InputRow = ({ label, children }) => (
-  <div className="flex flex-col">
-    <label className="text-sm font-medium text-gray-700 mb-1">{label}</label>
-    <div className="flex items-center gap-2">
-      {children[0]}
-      <span className="text-xs text-gray-400 whitespace-nowrap">{children[1]}</span>
-    </div>
-  </div>
-);
 
 export default CandidateProcessTracker;
