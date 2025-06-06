@@ -11,7 +11,7 @@ class CandidateProcessDetailBase(BaseModel):
     medical: Optional[str]
     agreement: Optional[str]
     embassy: Optional[str]
-    slbfe_approval: Optional[bool]
+    slbfe_approval: Optional[str]
     departure_date: Optional[date]
     remarks: Optional[str]
 
