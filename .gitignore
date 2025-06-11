@@ -13,6 +13,7 @@ frontend/.vite-temp/
 
 # Env files
 backend/.env
+frontend/.env
 
 # Logs & System
 *.log
