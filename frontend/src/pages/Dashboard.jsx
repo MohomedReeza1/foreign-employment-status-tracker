@@ -89,6 +89,7 @@ export default function Dashboard() {
                 className="border border-gray-300 px-4 py-2 rounded w-full md:w-1/4"
               >
                 <option value="">Filter by Latest Stage</option>
+                <option value="Not Started">Not Started</option>
                 <option value="Passport Registered">Passport Registered</option>
                 <option value="Application Sent">Application Sent</option>
                 <option value="Job Applied">Job Applied</option>
