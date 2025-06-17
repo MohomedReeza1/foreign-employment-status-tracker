@@ -42,7 +42,7 @@ export default function CandidateForm() {
     const checkExistingCandidateWithRefNo = async (refno) => {
     if (!refno) return
     try {
-      const res = await api.get(`/candidates/search?refno=${refno}`)
+      const res = await api.get(`/candidates/search/refno?refno=${refno}`)
       setCandidateExists(!!res.data)
     } catch (err) {
       console.error('Search failed:', err)
