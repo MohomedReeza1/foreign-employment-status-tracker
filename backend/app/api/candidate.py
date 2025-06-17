@@ -24,7 +24,7 @@ def search_candidate(passport: str, db: Session = Depends(get_db)):
     candidate = crud.get_candidate_by_passport(db, passport)
     return candidate
 
-@router.get("/candidates/search", response_model=CandidateOut | None)
+@router.get("/candidates/search/refno", response_model=CandidateOut | None)
 def search_candidate(referenceNo: str, db: Session = Depends(get_db)):
     candidate = crud.get_candidate_by_referenceno(db, referenceNo)
     return candidate
