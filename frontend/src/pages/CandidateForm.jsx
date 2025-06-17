@@ -39,6 +39,17 @@ export default function CandidateForm() {
     }
   }
 
+    const checkExistingCandidateWithRefNo = async (refno) => {
+    if (!refno) return
+    try {
+      const res = await api.get(`/candidates/search?refno=${refno}`)
+      setCandidateExists(!!res.data)
+    } catch (err) {
+      console.error('Search failed:', err)
+      setCandidateExists(false)
+    }
+  }
+
   return (
     <>
       <Header />
@@ -64,10 +75,18 @@ export default function CandidateForm() {
               <input
                 name="reference_number"
                 value={form.reference_number}
-                onChange={handleChange}
+                onChange={(e) => {
+                  handleChange(e)
+                  checkExistingCandidateWithRefNo(e.target.value)
+                }}
                 className="w-full border border-gray-300 p-2 rounded font-normal"
                 required
               />
+              {candidateExists && (
+                <p className="text-red-600 text-sm mt-1">
+                  A candidate with this reference number already exists.
+                </p>
+              )}
             </div>
 
             {/* Passport Number Second */}
