@@ -42,7 +42,7 @@ def update_process(db: Session, process_id: int, update_data: dict):
 def get_candidate_by_passport(db: Session, passport_number: str):
     return db.query(Candidate).filter(Candidate.passport_number == passport_number).first()
 
-def get_candidate_by_referenceno(db: Session, reference_number: str):
+def get_candidate_by_reference(db: Session, reference_number: str):
     return db.query(Candidate).filter(Candidate.reference_number == reference_number).first()
 
 def get_all_candidates_with_latest_status(db: Session):

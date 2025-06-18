@@ -24,10 +24,13 @@ def search_candidate(passport: str, db: Session = Depends(get_db)):
     candidate = crud.get_candidate_by_passport(db, passport)
     return candidate
 
-@router.get("/candidates/search/refno", response_model=CandidateOut | None)
-def search_candidate(referenceNo: str, db: Session = Depends(get_db)):
-    candidate = crud.get_candidate_by_referenceno(db, referenceNo)
-    return candidate
+@router.get("/candidates/search", response_model=CandidateOut | None)
+def search_candidate(passport: str = None, reference: str = None, db: Session = Depends(get_db)):
+    if passport:
+        return crud.get_candidate_by_passport(db, passport)
+    elif reference:
+        return crud.get_candidate_by_reference(db, reference)
+    return None
 
 @router.get("/candidates/paginated", response_model=PaginatedCandidateResponse)
 def get_paginated_candidates(
