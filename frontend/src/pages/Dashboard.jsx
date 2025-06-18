@@ -106,7 +106,7 @@ export default function Dashboard() {
             {role === 'processor' && (
               <button
                 onClick={() => navigate('/add')}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
               >
                 Add New Candidate
               </button>
