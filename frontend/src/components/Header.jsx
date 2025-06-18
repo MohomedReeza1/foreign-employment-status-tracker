@@ -12,7 +12,7 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-violet-800 py-4 px-6 flex justify-between items-center shadow-md">
+    <header className="bg-purple-800 py-4 px-6 flex justify-between items-center shadow-md">
       <div className="flex items-center gap-3">
         <img src={logo} alt="Al Akeem Logo" className="w-10 h-10 rounded-full bg-white p-1" />
         <h1 className="text-white text-lg font-semibold">
