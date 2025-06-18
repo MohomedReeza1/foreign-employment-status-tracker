@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import Header from '../components/Header'
+import api from '../api/axios'
 import LoginHeader from '../components/LoginHeader'
 
 export default function Login() {
