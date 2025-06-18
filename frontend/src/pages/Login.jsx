@@ -2,20 +2,17 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import api from '../api/axios'
-import LoginHeader from '../components/LoginHeader'
+import logo from '../assets/Logo.png'
 
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
-  const { login } = useAuth()
-  const { token, role } = useAuth() 
+  const { login, token, role } = useAuth()
 
   useEffect(() => {
-    if (token && role === 'processor') {
-      navigate('dashboard')
-    } else if (token && role === 'agent') {
+    if (token && (role === 'processor' || role === 'agent')) {
       navigate('dashboard')
     }
   }, [token, role])
@@ -23,16 +20,11 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
-      const res = await api.post('/login', {
-        username,
-        password,
-      })
-
+      const res = await api.post('/login', { username, password })
       const { access_token, role } = res.data
 
       localStorage.setItem('token', access_token)
       localStorage.setItem('role', role)
-
       login(access_token, role)
 
     } catch (err) {
@@ -41,18 +33,21 @@ export default function Login() {
   }
 
   return (
-    <>
-    <LoginHeader />
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form onSubmit={handleLogin} className="bg-white p-8 rounded shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+      <form
+        onSubmit={handleLogin}
+        className="bg-white p-10 rounded-2xl shadow-lg w-full max-w-md text-center"
+      >
+        <img src={logo} alt="Al Akeem Logo" className="mx-auto mb-6 w-40" />
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Sign In</h2>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+        
         <input
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full mb-4 p-2 border rounded"
+          className="w-full mb-4 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
           required
         />
         <input
@@ -60,17 +55,17 @@ export default function Login() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full mb-4 p-2 border rounded"
+          className="w-full mb-6 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
           required
         />
+        
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          className="w-full bg-indigo-600 text-white font-semibold py-2 rounded-md hover:bg-indigo-700 transition duration-200"
         >
-          Log In
+          SIGN IN
         </button>
       </form>
     </div>
-    </>
   )
 }
