@@ -1,6 +1,6 @@
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import logo from '../assets/Logo.png'
+import logo from '../assets/Al Akeem Logo.png'
 
 export default function Header() {
   const { logout, role } = useAuth()
