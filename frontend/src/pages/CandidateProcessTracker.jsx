@@ -91,11 +91,11 @@ const CandidateProcessTracker = ({ candidateId }) => {
       <Header />
       <div className="max-w-5xl mx-auto p-6 bg-white shadow rounded-xl mt-6">
         <div className="flex justify-between items-center mb-4">
-          <button onClick={() => navigate("/dashboard")} className="text-blue-600 hover:underline">
+          <button onClick={() => navigate("/dashboard")} className="text-indigo-600 hover:underline">
             ← Back to Dashboard
           </button>
           {role === "processor" && !editMode && (
-            <button onClick={() => setEditMode(true)} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <button onClick={() => setEditMode(true)} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
               Edit
             </button>
           )}
@@ -142,7 +142,7 @@ const CandidateProcessTracker = ({ candidateId }) => {
         {editMode && (
           <div className="mt-6 flex justify-end gap-4">
             <button onClick={handleCancel} className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Cancel</button>
-            <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
+            <button onClick={handleSave} className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Save</button>
           </div>
         )}
       </div>

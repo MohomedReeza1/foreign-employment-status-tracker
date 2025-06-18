@@ -60,7 +60,7 @@ export default function CandidateForm() {
             <button
               type="button"
               onClick={() => navigate('/dashboard')}
-              className="text-blue-600 hover:text-blue-800"
+              className="text-indigo-600 hover:text-indigo-800"
             >
               ← Back to Dashboard
             </button>
@@ -123,7 +123,7 @@ export default function CandidateForm() {
             <button
               type="submit"
               disabled={passportExists || referenceExists}
-              className={`w-full py-2 rounded text-white ${passportExists || referenceExists ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
+              className={`w-full py-2 rounded text-white ${passportExists || referenceExists ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'}`}
             >
               Submit
             </button>
