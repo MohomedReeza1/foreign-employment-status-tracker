@@ -91,7 +91,7 @@ const CandidateProcessTracker = ({ candidateId }) => {
       <Header />
       <div className="max-w-5xl mx-auto p-6 bg-white shadow rounded-xl mt-6">
         <div className="flex justify-between items-center mb-4">
-          <button onClick={() => navigate("/dashboard")} className="text-indigo-600 hover:underline">
+          <button onClick={() => navigate("/dashboard")} className="text-indigo-600 hover:text-indigo-800">
             ← Back to Dashboard
           </button>
           {role === "processor" && !editMode && (

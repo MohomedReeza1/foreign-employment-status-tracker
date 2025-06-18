@@ -165,7 +165,7 @@ export default function Dashboard() {
                       </td>
                       <td className="px-6 py-4 text-red-600">{c.status || '—'}</td>
                       <td className="px-6 py-4">
-                        <Link to={`/candidate/${c.id}/process-tracker`} className="text-blue-600 hover:underline">
+                        <Link to={`/candidate/${c.id}/process-tracker`} className="text-indigo-600 hover:text-indigo-800">
                           View
                         </Link>
                       </td>
