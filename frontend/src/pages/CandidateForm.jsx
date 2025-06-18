@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 
 export default function CandidateForm() {
-  const [candidateExists, setCandidateExists] = useState(false)
+  const [passportExists, setPassportExists] = useState(false)
+  const [referenceExists, setReferenceExists] = useState(false)
   const [form, setForm] = useState({
     full_name: '',
     passport_number: '',
@@ -13,7 +14,14 @@ export default function CandidateForm() {
   const navigate = useNavigate()
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    let { name, value } = e.target;
+
+    // Disallow spaces in reference and passport number
+    if (name === 'reference_number' || name === 'passport_number') {
+      value = value.replace(/\s/g, '');
+    }
+
+    setForm({ ...form, [name]: value });
   }
 
   const handleSubmit = async (e) => {
@@ -28,25 +36,16 @@ export default function CandidateForm() {
     }
   }
 
-  const checkExistingCandidate = async (passport) => {
-    if (!passport) return
+  const checkExistingCandidate = async (type, value) => {
+    if (!value) return
     try {
-      const res = await api.get(`/candidates/search?passport=${passport}`)
-      setCandidateExists(!!res.data)
+      const res = await api.get(`/candidates/search?${type}=${value}`)
+      if (type === 'passport') setPassportExists(!!res.data)
+      if (type === 'reference') setReferenceExists(!!res.data)
     } catch (err) {
       console.error('Search failed:', err)
-      setCandidateExists(false)
-    }
-  }
-
-    const checkExistingCandidateWithRefNo = async (refno) => {
-    if (!refno) return
-    try {
-      const res = await api.get(`/candidates/search/refno?refno=${refno}`)
-      setCandidateExists(!!res.data)
-    } catch (err) {
-      console.error('Search failed:', err)
-      setCandidateExists(false)
+      if (type === 'passport') setPassportExists(false)
+      if (type === 'reference') setReferenceExists(false)
     }
   }
 
@@ -77,12 +76,12 @@ export default function CandidateForm() {
                 value={form.reference_number}
                 onChange={(e) => {
                   handleChange(e)
-                  checkExistingCandidateWithRefNo(e.target.value)
+                  checkExistingCandidate('reference', e.target.value)
                 }}
                 className="w-full border border-gray-300 p-2 rounded font-normal"
                 required
               />
-              {candidateExists && (
+              {referenceExists && (
                 <p className="text-red-600 text-sm mt-1">
                   A candidate with this reference number already exists.
                 </p>
@@ -97,12 +96,12 @@ export default function CandidateForm() {
                 value={form.passport_number}
                 onChange={(e) => {
                   handleChange(e)
-                  checkExistingCandidate(e.target.value)
+                  checkExistingCandidate('passport', e.target.value)
                 }}
                 className="w-full border border-gray-300 p-2 rounded font-normal"
                 required
               />
-              {candidateExists && (
+              {passportExists && (
                 <p className="text-red-600 text-sm mt-1">
                   A candidate with this passport already exists.
                 </p>
@@ -123,8 +122,8 @@ export default function CandidateForm() {
 
             <button
               type="submit"
-              disabled={candidateExists}
-              className={`w-full py-2 rounded text-white ${candidateExists ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
+              disabled={passportExists || referenceExists}
+              className={`w-full py-2 rounded text-white ${passportExists || referenceExists ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
             >
               Submit
             </button>
