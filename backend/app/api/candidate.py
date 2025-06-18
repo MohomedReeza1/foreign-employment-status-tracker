@@ -20,11 +20,6 @@ def create_candidate(candidate: CandidateCreate, db: Session = Depends(get_db)):
     return crud.create_candidate(db, candidate)
 
 @router.get("/candidates/search", response_model=CandidateOut | None)
-def search_candidate(passport: str, db: Session = Depends(get_db)):
-    candidate = crud.get_candidate_by_passport(db, passport)
-    return candidate
-
-@router.get("/candidates/search", response_model=CandidateOut | None)
 def search_candidate(passport: str = None, reference: str = None, db: Session = Depends(get_db)):
     if passport:
         return crud.get_candidate_by_passport(db, passport)
